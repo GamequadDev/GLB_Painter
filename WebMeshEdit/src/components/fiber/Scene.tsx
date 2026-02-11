@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { RotationMesh } from "./RotationMesh";
+import { Mesh } from "@/components/fiber/Mesh";
 import { Environment, ContactShadows} from "@react-three/drei";
 import * as THREE from "three";
 import {EffectComposer, Bloom, SSAO, SMAA} from "@react-three/postprocessing";
@@ -27,7 +27,7 @@ export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
 
             <Suspense fallback={null}>   
                 <Environment preset="sunset" />
-                <RotationMesh isRotating={true} speed={1} />
+                <Mesh isRotating={true} speed={1} />
 
                 {/* Soft Shadow under mesh*/}
                 <ContactShadows

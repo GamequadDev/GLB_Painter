@@ -4,18 +4,16 @@ import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
 
-interface RotationMeshProps
+interface RotationProps
 {
     isRotating: boolean;
     speed: number;
 }
 
 
-export const RotationMesh = ({isRotating, speed} : RotationMeshProps) => {
+export const useRotation = ({isRotating, speed} : RotationProps) => {
     
     const meshRef = useRef<THREE.Mesh>(null!);
-
-    //Rotation per frame
 
     useFrame((_state, delta) => {
         if (isRotating) {
@@ -25,11 +23,5 @@ export const RotationMesh = ({isRotating, speed} : RotationMeshProps) => {
     });
 
 
-    return (
-        <mesh position={[0,0,0]}  ref={meshRef}>
-                <boxGeometry args={[1,1,1]} />     
-                <meshStandardMaterial color="red" />
-        </mesh>
-    )
-
+    return meshRef
 }
