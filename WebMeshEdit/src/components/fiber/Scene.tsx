@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Mesh } from "@/components/fiber/Mesh";
-import { Environment, ContactShadows} from "@react-three/drei";
+import { Environment, ContactShadows, Stage, OrbitControls} from "@react-three/drei";
 import * as THREE from "three";
 import {EffectComposer, Bloom, SSAO, SMAA} from "@react-three/postprocessing";
 
@@ -10,7 +10,6 @@ import {EffectComposer, Bloom, SSAO, SMAA} from "@react-three/postprocessing";
 interface SceneProps {
     bgColor: string;
     modelUrl: string;
-
 }
 
 
@@ -27,8 +26,9 @@ export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
 
             <Suspense fallback={null}>   
                 <Environment preset="sunset" />
-                <Mesh isRotating={true} speed={1} />
-
+                <Stage adjustCamera intensity={0.5}>
+                <Mesh isRotating={true} speed={0.3} modelUrl={modelUrl}/>
+                </Stage>
                 {/* Soft Shadow under mesh*/}
                 <ContactShadows
                 position={[0,-1,0]}
@@ -38,6 +38,12 @@ export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
                 far={4}
                 />
             </Suspense>
+
+            <OrbitControls 
+            enableDamping={true} 
+            dampingFactor={0.05} 
+            />
+
 
             {/* Postproces */}
             <EffectComposer enableNormalPass>

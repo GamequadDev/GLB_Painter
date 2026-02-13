@@ -18,7 +18,7 @@ export const useRotation = ({isRotating, speed} : RotationProps) => {
     useFrame((_state, delta) => {
         if (isRotating) {
             meshRef.current.rotation.y += delta * speed;
-            meshRef.current.rotation.x += delta * (speed / 3);
+            //meshRef.current.rotation.x += delta * (speed / 3);
         }
     });
 
