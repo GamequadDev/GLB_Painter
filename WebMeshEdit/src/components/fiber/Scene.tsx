@@ -5,15 +5,20 @@ import { Environment, ContactShadows, Stage, OrbitControls} from "@react-three/d
 import * as THREE from "three";
 import {EffectComposer, Bloom, SSAO, SMAA} from "@react-three/postprocessing";
 
-
+export interface BrushSettings {
+  mode: 'orbit' | 'paint';
+  color: string;
+  size: number;
+}
 
 interface SceneProps {
     bgColor: string;
     modelUrl: string;
+    brush: BrushSettings;
 }
 
 
-export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
+export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl, brush }) => {
 
     return (
         <div className="relative w-full h-full">
@@ -27,7 +32,7 @@ export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
             <Suspense fallback={null}>   
                 <Environment preset="sunset" />
                 <Stage adjustCamera intensity={0.5}>
-                <Mesh isRotating={true} speed={0.3} modelUrl={modelUrl}/>
+                <Mesh isRotating={true} speed={0.3} modelUrl={modelUrl} brush={brush}/>
                 </Stage>
                 {/* Soft Shadow under mesh*/}
                 <ContactShadows
@@ -39,9 +44,12 @@ export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
                 />
             </Suspense>
 
+            {/* dadasda */}
             <OrbitControls 
+            makeDefault
             enableDamping={true} 
             dampingFactor={0.05} 
+            enabled={brush.mode === 'orbit'}
             />
 
 

@@ -3,31 +3,26 @@ import { useRotation } from "@/components/fiber/RotationMesh";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
+import { usePaintableTexture } from "@/components/fiber/PaintableTexture";
+import type { BrushSettings } from "@/types/Brush";
 
 interface MeshProps
 {
     isRotating: boolean;
     speed: number;
     modelUrl: string;
+    brush: BrushSettings;
 }
 
-export const Mesh = ({isRotating = true, speed = 1, modelUrl="./models/marble_bust.glb"}) => {
+export const Mesh = ({isRotating = true, speed = 1, modelUrl="./models/marble_bust.glb", brush}: MeshProps) => {
 
     const { nodes, materials } = useGLTF(modelUrl) as any;
     const textureRef = useRef<THREE.Texture>(null!);
 
     const canvas = useMemo(() => document.createElement('canvas'), []);
 
-     {/* Material PBR 
-    useEffect(() => {
-        const ctx = canvas.getContext('2d')!;
-        if (!ctx) return;
-        
-        const targetMesh = nodes.testat
 
-    })*/}
-
-
+    const { texture, paint, stopPainting } = usePaintableTexture();
     const rotationRef = useRotation({isRotating,speed});
 
     return (
@@ -36,15 +31,42 @@ export const Mesh = ({isRotating = true, speed = 1, modelUrl="./models/marble_bu
             if (node.isMesh) {
                 return (
                     <mesh
-                    key={index}
-                    geometry={node.geometry}
-                    material={node.material}
-                    position={node.position}
-                    scale={node.scale}>
+                        key={index}
+                        geometry={node.geometry}
+                        //material={node.material}
+                        position={node.position}
+                        scale={node.scale}
 
-                    {/* Material PBR 
+                        onPointerEnter={() => {
+                            if (brush.mode === 'paint') document.body.style.cursor = 'crosshair';
+                        }}
 
-                    <meshStandardMaterial color="red" roughness={0.0} metalness={1} envMapIntensity={1.5}/>*/}
+                        onPointerDown={(e) => {
+                            if (brush.mode !== 'paint') return;
+
+                            e.stopPropagation();
+                            paint(e, brush.color, brush.size);
+                        }}
+
+                        onPointerMove={(e) => {
+                            if (brush.mode === 'paint' && e.buttons === 1) {
+                                e.stopPropagation();
+                                paint(e, brush.color, brush.size);
+                            }
+                        }}
+
+                        onPointerLeave={() => {
+                            document.body.style.cursor = 'auto';
+                            stopPainting();
+                        }}
+
+                        onPointerUp={stopPainting}
+                        onPointerOut={stopPainting}
+                    >
+
+                    {/* Material PBR */}
+
+                    <meshStandardMaterial map={texture}/>
                     </mesh>
                 );
             }
