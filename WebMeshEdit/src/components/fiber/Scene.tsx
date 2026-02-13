@@ -1,20 +1,24 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { RotationMesh } from "./RotationMesh";
-import { Environment, ContactShadows} from "@react-three/drei";
+import { Mesh } from "@/components/fiber/Mesh";
+import { Environment, ContactShadows, Stage, OrbitControls} from "@react-three/drei";
 import * as THREE from "three";
 import {EffectComposer, Bloom, SSAO, SMAA} from "@react-three/postprocessing";
 
-
+export interface BrushSettings {
+  mode: 'orbit' | 'paint';
+  color: string;
+  size: number;
+}
 
 interface SceneProps {
     bgColor: string;
     modelUrl: string;
-
+    brush: BrushSettings;
 }
 
 
-export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
+export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl, brush }) => {
 
     return (
         <div className="relative w-full h-full">
@@ -27,8 +31,9 @@ export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
 
             <Suspense fallback={null}>   
                 <Environment preset="sunset" />
-                <RotationMesh isRotating={true} speed={1} />
-
+                <Stage adjustCamera intensity={0.5}>
+                <Mesh isRotating={true} speed={0.3} modelUrl={modelUrl} brush={brush}/>
+                </Stage>
                 {/* Soft Shadow under mesh*/}
                 <ContactShadows
                 position={[0,-1,0]}
@@ -38,6 +43,15 @@ export const Scene: React.FC<SceneProps> = ({bgColor, modelUrl }) => {
                 far={4}
                 />
             </Suspense>
+
+            {/* dadasda */}
+            <OrbitControls 
+            makeDefault
+            enableDamping={true} 
+            dampingFactor={0.05} 
+            enabled={brush.mode === 'orbit'}
+            />
+
 
             {/* Postproces */}
             <EffectComposer enableNormalPass>
