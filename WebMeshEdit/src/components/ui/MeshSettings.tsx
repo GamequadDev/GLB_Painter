@@ -1,27 +1,16 @@
 interface MeshSettingsProps {
-    isRotating: boolean;
-    setIsRotating: (val: boolean) => void;
     rotationSpeed: number;
     setRotationSpeed: (val: number) => void;
+    onExport: () => void;
 }
 
 export const MeshSettings = ({
-    isRotating,
-    setIsRotating,
     rotationSpeed,
-    setRotationSpeed
+    setRotationSpeed,
+    onExport
 }: MeshSettingsProps) => {
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
-                <span className="text-sm font-medium text-gray-600">Auto Rotacja</span>
-                <input
-                    type="checkbox"
-                    checked={isRotating}
-                    onChange={(e) => setIsRotating(e.target.checked)}
-                    className="w-5 h-5 accent-blue-600 cursor-pointer"
-                />
-            </div>
 
             <div className="bg-white p-3 rounded-lg shadow-sm space-y-2">
                 <div className="flex justify-between">
@@ -36,6 +25,14 @@ export const MeshSettings = ({
                     className="w-full accent-blue-600 cursor-pointer"
                 />
             </div>
+
+            <button
+                onClick={onExport}
+                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+            >
+                <span>💾</span> Pobierz Model (.glb)
+            </button>
+
         </div>
     );
 }
