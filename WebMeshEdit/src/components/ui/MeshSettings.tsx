@@ -9,30 +9,29 @@ export const MeshSettings = ({
     setRotationSpeed,
     onExport
 }: MeshSettingsProps) => {
-    return (
+    return  (
         <div className="space-y-4">
-
-            <div className="bg-white p-3 rounded-lg shadow-sm space-y-2">
-                <div className="flex justify-between">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase">Prędkość</label>
-                    <span className="text-[10px] font-mono text-blue-600">{rotationSpeed.toFixed(1)}</span>
+            <div className="bg-element-bg rounded border border-ui-border overflow-hidden">
+                <div className="bg-hover-bg px-3 py-1 text-[10px] font-bold text-txt-main uppercase border-b border-ui-border">
+                    Transformacja
                 </div>
-                <input
-                    type="range"
-                    min="0" max="2" step="0.1"
-                    value={rotationSpeed}
-                    onChange={(e) => setRotationSpeed(parseFloat(e.target.value))}
-                    className="w-full accent-blue-600 cursor-pointer"
-                />
+                <div className="p-3">
+                    <div className="flex justify-between items-center text-[11px] mb-2">
+                        <span className="text-txt-muted">Prędkość obrotu</span>
+                        <span className="text-brand font-mono">{rotationSpeed.toFixed(2)}</span>
+                    </div>
+                    <input
+                        type="range" min="0" max="2" step="0.1"
+                        value={rotationSpeed}
+                        onChange={(e) => setRotationSpeed(parseFloat(e.target.value))}
+                        className="w-full h-1 bg-ui-border rounded appearance-none cursor-pointer accent-brand"
+                    />
+                </div>
             </div>
 
-            <button
-                onClick={onExport}
-                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
-            >
-                <span>💾</span> Pobierz Model (.glb)
+            <button onClick={onExport} className="w-full py-2 bg-hover-bg hover:bg-brand hover:text-white border border-ui-border text-txt-main text-[11px] font-bold rounded transition-all active:scale-95">
+                💾 EKSPORTUJ MODEL
             </button>
-
         </div>
     );
 }

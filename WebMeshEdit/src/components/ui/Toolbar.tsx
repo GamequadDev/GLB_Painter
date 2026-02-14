@@ -6,7 +6,6 @@ interface ToolbarProps {
   setBrush: React.Dispatch<React.SetStateAction<BrushSettings>>;
 }
 
-// Lista dostępnych tekstur (upewnij się, że masz te pliki w folderze public/textures/)
 const TEXTURES = [
   { name: 'Trawa', url: '/textures/grass.jpg' },
   { name: 'Kamień', url: '/textures/stone.jpg' },
@@ -22,38 +21,56 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
   };
 
   return (
-    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-6 p-4 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 pointer-events-auto">
+    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4 p-1.5 bg-panel-bg/95 backdrop-blur-md rounded-lg shadow-2xl border border-ui-border pointer-events-auto">
       
-      {/* Type change */}
-      <div className="flex bg-gray-200/50 p-1 rounded-xl">
+      {/* Selektor trybu (Mode Toggle) */}
+      <div className="flex bg-ui-border p-1 rounded-md border border-element-bg">
         <button 
           onClick={() => setBrush(prev => ({ ...prev, mode: 'orbit' }))}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${brush.mode === 'orbit' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 py-1.5 rounded flex items-center gap-2 text-[11px] font-bold transition-all ${
+            brush.mode === 'orbit' 
+            ? 'bg-hover-bg text-white shadow-inner' 
+            : 'text-txt-muted hover:text-txt-main'
+          }`}
         >
-          Obracaj
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4h16v16H4V4z" />
+          </svg>
+          Nawigacja
         </button>
         <button 
           onClick={() => setBrush(prev => ({ ...prev, mode: 'paint' }))}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${brush.mode === 'paint' ? 'bg-white shadow-sm text-red-600' : 'text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 py-1.5 rounded flex items-center gap-2 text-[11px] font-bold transition-all ${
+            brush.mode === 'paint' 
+            ? 'bg-brand text-white shadow-inner' 
+            : 'text-txt-muted hover:text-txt-main'
+          }`}
         >
-          Maluj
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.3 5.7c-.8-.8-2.1-.8-2.8 0L7 14.2l-1.4 4.3c-.1.3 0 .6.2.8.2.2.5.3.8.2l4.3-1.4 8.5-8.5c.7-.8.7-2.1-.1-2.9z" />
+          </svg>
+          Malowanie
         </button>
       </div>
 
-      {/* Paint settings */}
+      {/* Kontrolki malowania (wyświetlane tylko w trybie paint) */}
       {brush.mode === 'paint' && (
         <>
-          <div className="h-8 w-[1px] bg-gray-300" /> {/* Seperator */}
+          <div className="h-8 w-[1px] bg-element-bg" />
 
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-bold text-gray-400 uppercase text-center -mb-1">Kolory</span>
-            <div className="flex gap-2">
-              {['#ff0000', '#00ff00', '#3b82f6', '#000000'].map(color => (
+          {/* Wybór kolorów */}
+          <div className="flex flex-col gap-1 px-1">
+            <span className="text-[9px] font-bold text-txt-muted uppercase tracking-tighter text-center italic">Kolor</span>
+            <div className="flex gap-1">
+              {['#ff4444', '#44ff44', '#4488ff', '#111111'].map(color => (
                 <button
                   key={color}
-                  // WAŻNE: Resetujemy textureUrl na null, aby wymusić użycie koloru
                   onClick={() => setBrush(prev => ({ ...prev, color, textureUrl: null }))}
-                  className={`w-6 h-6 rounded-full border-2 transition-all ${brush.color === color && !brush.textureUrl ? 'scale-125 border-gray-400' : 'border-transparent'}`}
+                  className={`w-5 h-5 rounded-sm border transition-all ${
+                    brush.color === color && !brush.textureUrl 
+                    ? 'border-white scale-110 shadow-[0_0_8px_rgba(230,133,49,0.4)]' 
+                    : 'border-ui-border'
+                  }`}
                   style={{ backgroundColor: color }}
                   title={color}
                 />
@@ -61,18 +78,21 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
             </div>
           </div>
 
-          <div className="h-8 w-[1px] bg-gray-300" /> {/* Seperator */}
+          <div className="h-8 w-[1px] bg-element-bg" />
 
-          {/* Texture select */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-bold text-gray-400 uppercase text-center -mb-1">Tekstury</span>
-            <div className="flex gap-2">
+          {/* Wybór tekstur */}
+          <div className="flex flex-col gap-1 px-1">
+            <span className="text-[9px] font-bold text-txt-muted uppercase tracking-tighter text-center italic">Tekstura</span>
+            <div className="flex gap-1">
               {TEXTURES.map(tex => (
                 <button
                   key={tex.name}
-                  // Ustawiamy textureUrl na wybrany obrazek
                   onClick={() => setBrush(prev => ({ ...prev, textureUrl: tex.url }))}
-                  className={`w-6 h-6 rounded-full border-2 transition-all bg-gray-200 ${brush.textureUrl === tex.url ? 'scale-125 border-gray-400' : 'border-transparent'}`}
+                  className={`w-5 h-5 rounded-sm border bg-element-bg transition-all ${
+                    brush.textureUrl === tex.url 
+                    ? 'border-brand scale-110 shadow-[0_0_8px_rgba(230,133,49,0.4)]' 
+                    : 'border-ui-border'
+                  }`}
                   style={{ 
                     backgroundImage: `url(${tex.url})`, 
                     backgroundSize: 'cover',
@@ -84,13 +104,13 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
             </div>
           </div>
 
-          <div className="h-8 w-[1px] bg-gray-300" /> {/* Seperator */}
+          <div className="h-8 w-[1px] bg-element-bg" />
 
-          {/* Size painter */}
-          <div className="flex flex-col gap-1 w-32">
-            <div className="flex justify-between items-center px-1">
-                <span className="text-[10px] font-bold text-gray-400 uppercase">Rozmiar</span>
-                <span className="text-[10px] font-mono text-gray-600 font-bold">{brush.size}px</span>
+          {/* Suwak rozmiaru pędzla */}
+          <div className="flex flex-col gap-1 w-32 px-2">
+            <div className="flex justify-between items-center px-0.5">
+                <span className="text-[9px] font-bold text-txt-muted uppercase">Pędzel</span>
+                <span className="text-[10px] font-mono text-brand font-bold">{brush.size}px</span>
             </div>
             <input 
               type="range" 
@@ -98,7 +118,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
               max="100" 
               value={brush.size}
               onChange={handleSizeChange}
-              className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500"
+              className="w-full h-1 bg-ui-border rounded appearance-none cursor-pointer accent-brand"
             />
           </div>
         </>
