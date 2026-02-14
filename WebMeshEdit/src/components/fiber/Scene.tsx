@@ -44,11 +44,14 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
 
             if (node.isMesh) {
                 const oldMat = node.material as THREE.MeshStandardMaterial;
-                const safeMaterial = new THREE.MeshStandardMaterial({
+               const safeMaterial = new THREE.MeshStandardMaterial({
                     color: oldMat.color,
-                    roughness: oldMat.roughness, // Pobiera błysk z ekranu
-                    metalness: oldMat.metalness, // Pobiera metaliczność z ekranu
-                    normalMap: oldMat.normalMap, // Zapisuje ewentualne nierówności
+                    roughness: oldMat.roughness,
+                    metalness: oldMat.metalness,
+                    normalMap: oldMat.normalMap,
+                    metalnessMap: oldMat.metalnessMap, // DODAJ TO
+                    roughnessMap: oldMat.roughnessMap, // DODAJ TO
+                    aoMap: oldMat.aoMap,               // DODAJ TO
                 });
 
                 if (oldMat.map && oldMat.map.image) {
