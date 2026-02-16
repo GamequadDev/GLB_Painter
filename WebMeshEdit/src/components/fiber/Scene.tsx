@@ -19,7 +19,6 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
     const [ready, setReady] = useState(false);
     const groupRef = useRef<THREE.Group>(null!);
 
-    // Eksport wywoływany przez zmianę licznika
     useEffect(() => {
         if (exportTrigger > 0 && groupRef.current) {
             handleExport();
@@ -33,7 +32,6 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
         const clone = groupRef.current.clone(true);
         const nodesToRemove: THREE.Object3D[] = [];
         
-        // ZMIANA 2: Tablica na obietnice (Promises) ładowania obrazków
         const texturePromises: Promise<void>[] = [];
 
         clone.traverse((node: any) => {
@@ -49,9 +47,9 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
                     roughness: oldMat.roughness,
                     metalness: oldMat.metalness,
                     normalMap: oldMat.normalMap,
-                    metalnessMap: oldMat.metalnessMap, // DODAJ TO
-                    roughnessMap: oldMat.roughnessMap, // DODAJ TO
-                    aoMap: oldMat.aoMap,               // DODAJ TO
+                    metalnessMap: oldMat.metalnessMap, 
+                    roughnessMap: oldMat.roughnessMap,
+                    aoMap: oldMat.aoMap,               
                 });
 
                 if (oldMat.map && oldMat.map.image) {
@@ -59,7 +57,6 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
                         let dataUrl = "";
                         const sourceImage = oldMat.map.image;
                         
-                        // WYCIĄGAMY WARTOŚĆ TUTAJ, zanim wejdziemy w Promise
                         const originalFlipY = oldMat.map.flipY; 
 
                         if (sourceImage instanceof HTMLCanvasElement) {
@@ -80,14 +77,13 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
                                     const newTexture = new THREE.Texture(newImg);
                                     newTexture.needsUpdate = true;
                                     
-                                    // UŻYWAMY ZAPISANEJ WARTOŚCI
                                     newTexture.flipY = originalFlipY; 
                                     
                                     safeMaterial.map = newTexture;
                                     resolve();
                                 };
                                 newImg.onerror = () => {
-                                    console.warn("Nie udało się załadować obrazka do eksportu.");
+                                    console.warn("Img not loaded to export.");
                                     resolve();
                                 };
                                 newImg.src = dataUrl;
@@ -96,7 +92,7 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
                             texturePromises.push(imagePromise);
                         }
                     } catch (e) {
-                        console.warn("Nie udało się odczytać mapy.", e);
+                        console.warn("Maps not loaded.", e);
                     }
                 }
 
@@ -104,13 +100,10 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
             }
         });
 
-        // Usuwamy śmieci
         nodesToRemove.forEach(node => node.parent?.remove(node));
 
-        // ZMIANA 4: Zatrzymujemy kod i czekamy, aż wszystkie obrazki się załadują!
         await Promise.all(texturePromises);
 
-        // ZMIANA 5: Dopiero teraz odpalamy eksportera
         exporter.parse(
             clone,
             (result) => {
@@ -124,7 +117,7 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
                     document.body.removeChild(link);
                 }
             },
-            (error) => console.error('Błąd eksportu GLTF:', error),
+            (error) => console.error('Eerror exporting GLTF:', error),
             { binary: true }
         );
     };
@@ -142,7 +135,7 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
                 shadows
                 gl={{ 
                     antialias: true, 
-                    preserveDrawingBuffer: true, // Niezbędne do odczytu danych canvasa
+                    preserveDrawingBuffer: true, 
                     toneMapping: THREE.ACESFilmicToneMapping, 
                     outputColorSpace: THREE.SRGBColorSpace 
                 }}
@@ -150,7 +143,7 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
             >
                 <color attach="background" args={[bgColor]} />
                 
-                {/* Wszystko wewnątrz tej grupy zostanie wyeksportowane */}
+                {/* Enviro */}
                 <group key={modelUrl} >
                     <Suspense fallback={null}>
                         <Environment preset="sunset" />
@@ -177,7 +170,7 @@ export const Scene: React.FC<SceneProps> = ({ bgColor, modelUrl, brush, rotation
                     />
                 )}
 
-                {/* NAPRAWA: Dodano normalPass do EffectComposer */}
+                {/* Post proccess efect */}
                 <EffectComposer enableNormalPass={true}>
                     <SSAO 
                         intensity={1.5} 

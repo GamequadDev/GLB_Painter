@@ -10,7 +10,7 @@ export const Uploader: React.FC<UploaderProps> = ({ onModelUpload }) => {
         const file = e.target.files?.[0];
         if (file) {
             if (!file.name.endsWith(".glb") && !file.name.endsWith(".gltf")) {
-                alert("Plik musi mieć rozszerzenie .glb lub .gltf");
+                alert("File mus be .glb lub .gltf");
                 return;
             }
 
@@ -25,7 +25,10 @@ export const Uploader: React.FC<UploaderProps> = ({ onModelUpload }) => {
                 <svg className="w-4 h-4 text-brand group-active:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
                 </svg>
-                <span className="text-[11px] font-bold uppercase tracking-wider">Wczytaj model</span>
+                <div className=' flex flex-col'>           
+                <span className="text-[11px] font-bold uppercase tracking-wider">Upload model</span>
+                <span className="text-[9px] font-italic uppercase tracking-wider">.glb or .gltf file support only</span>
+                </div>
             </div>
             <input type="file" className="hidden" accept=".glb,.gltf" onChange={(e) => {
                 const file = e.target.files?.[0];
