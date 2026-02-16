@@ -16,8 +16,7 @@
 
 Projekt został zbudowany przy użyciu:
 
-* **Framework**: [React 19](https://react.dev/)
-* **Silnik 3D**: [React Three Fiber](https://r3f.docs.pmnd.rs/) & [Three.js](https://threejs.org/)
+* **Framework**: [React 19](https://react.dev/), [React Three Fiber](https://r3f.docs.pmnd.rs/), [Three.js](https://threejs.org/)
 * **UI Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 * **Programing Language**: [TypeScript](https://www.typescriptlang.org/)
 
