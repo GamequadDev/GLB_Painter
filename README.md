@@ -12,6 +12,15 @@
 
 ---
 
+## ⚠️ Technical Challenges: UV Mapping
+
+The quality and precision of painting within the application are directly dependent on the model's UV mapping structure. Please note the following:
+* **Broken UVs**: If a model has incorrect or overlapping UV islands, painting may cause visual artifacts in unexpected areas of the model.
+* **Distortions**: Uneven UV mapping can lead to stretching of applied textures or brush strokes.
+* **Missing UV Maps**: Models without defined UV coordinates will not support the painting functionality.
+
+---
+
 ## 🛠️ Tech
 
 Projekt został zbudowany przy użyciu:
