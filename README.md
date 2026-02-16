@@ -12,7 +12,7 @@
 
 ---
 
-## ⚠️ Technical Challenges: UV Mapping
+## ⚠️ Important: UV Mapping
 
 The quality and precision of painting within the application are directly dependent on the model's UV mapping structure. Please note the following:
 * **Broken UVs**: If a model has incorrect or overlapping UV islands, painting may cause visual artifacts in unexpected areas of the model.
