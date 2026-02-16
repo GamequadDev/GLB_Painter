@@ -16,14 +16,13 @@ export const Mesh = ({ modelUrl, brush, speed }: MeshProps) => {
     const { texture, paint, stopPainting, initCanvas } = usePaintableTexture();
     const rotationRef = useRotation({ speed });
 
-    // NOWE: Stan przechowujący wczytany obrazek tekstury
     const [brushPattern, setBrushPattern] = useState<HTMLImageElement | null>(null);
 
-    // NOWE: Reakcja na zmianę wybranej tekstury w pędzlu
+    // Texture
     useEffect(() => {
         if (brush.textureUrl) {
             const img = new Image();
-            img.crossOrigin = "anonymous"; // Zapobiega błędom CORS przy eksporcie!
+            img.crossOrigin = "anonymous"; 
             img.src = brush.textureUrl;
             img.onload = () => setBrushPattern(img);
         } else {
@@ -31,7 +30,6 @@ export const Mesh = ({ modelUrl, brush, speed }: MeshProps) => {
         }
     }, [brush.textureUrl]);
 
-    // ... (Twój obecny useEffect z initCanvas zostaje tutaj bez zmian) ...
     useEffect(() => {
         const materialNames = Object.keys(materials);
         if (materialNames.length > 0) {
@@ -64,13 +62,11 @@ export const Mesh = ({ modelUrl, brush, speed }: MeshProps) => {
                             onPointerDown={(e) => {
                                 if (brush.mode !== 'paint') return;
                                 e.stopPropagation();
-                                // PRZEKAZUJEMY brushPattern jako 4 argument!
                                 paint(e, brush.color, brush.size, brushPattern);
                             }}
                             onPointerMove={(e) => {
                                 if (brush.mode === 'paint' && e.buttons === 1) { 
                                     e.stopPropagation();
-                                    // PRZEKAZUJEMY brushPattern jako 4 argument!
                                     paint(e, brush.color, brush.size, brushPattern);
                                 }
                             }}
@@ -86,8 +82,8 @@ export const Mesh = ({ modelUrl, brush, speed }: MeshProps) => {
 
                                 metalnessMap={origMat.metalnessMap} 
                                 roughnessMap={origMat.roughnessMap} 
-                                aoMap={origMat.aoMap} // (Ambient Occlusion - dodaje realizmu w szczelinach)
-                                emissive={origMat.emissive} // W razie gdyby radio miało świecące diody!
+                                aoMap={origMat.aoMap} 
+                                emissive={origMat.emissive}
                                 emissiveMap={origMat.emissiveMap}
                             />
                         </mesh>

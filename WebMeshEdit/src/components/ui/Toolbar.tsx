@@ -7,10 +7,10 @@ interface ToolbarProps {
 }
 
 const TEXTURES = [
-  { name: 'Trawa', url: '/textures/grass.jpg' },
-  { name: 'Kamień', url: '/textures/stone.jpg' },
-  { name: 'Rdza', url: '/textures/rust.jpg' },
-  { name: 'Drewno', url: '/textures/wood.jpg' }
+  { name: 'Grass', url: '/textures/grass.jpg' },
+  { name: 'Stone', url: '/textures/stone.jpg' },
+  { name: 'Rust', url: '/textures/rust.jpg' },
+  { name: 'Wood', url: '/textures/wood.jpg' }
 ];
 
 export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
@@ -23,7 +23,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
   return (
     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4 p-1.5 bg-panel-bg/95 backdrop-blur-md rounded-lg shadow-2xl border border-ui-border pointer-events-auto">
       
-      {/* Selektor trybu (Mode Toggle) */}
+      {/* Mode Toggle */}
       <div className="flex bg-ui-border p-1 rounded-md border border-element-bg">
         <button 
           onClick={() => setBrush(prev => ({ ...prev, mode: 'orbit' }))}
@@ -36,7 +36,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4h16v16H4V4z" />
           </svg>
-          Nawigacja
+          Navigation
         </button>
         <button 
           onClick={() => setBrush(prev => ({ ...prev, mode: 'paint' }))}
@@ -49,18 +49,18 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18.3 5.7c-.8-.8-2.1-.8-2.8 0L7 14.2l-1.4 4.3c-.1.3 0 .6.2.8.2.2.5.3.8.2l4.3-1.4 8.5-8.5c.7-.8.7-2.1-.1-2.9z" />
           </svg>
-          Malowanie
+          Paint
         </button>
       </div>
 
-      {/* Kontrolki malowania (wyświetlane tylko w trybie paint) */}
+      {/* Control painting */}
       {brush.mode === 'paint' && (
         <>
           <div className="h-8 w-[1px] bg-element-bg" />
 
-          {/* Wybór kolorów */}
+          {/* Color select */}
           <div className="flex flex-col gap-1 px-1">
-            <span className="text-[9px] font-bold text-txt-muted uppercase tracking-tighter text-center italic">Kolor</span>
+            <span className="text-[9px] font-bold text-txt-muted uppercase tracking-tighter text-center italic">Color</span>
             <div className="flex gap-1">
               {['#ff4444', '#44ff44', '#4488ff', '#111111'].map(color => (
                 <button
@@ -80,9 +80,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
 
           <div className="h-8 w-[1px] bg-element-bg" />
 
-          {/* Wybór tekstur */}
+          {/* Texture select */}
           <div className="flex flex-col gap-1 px-1">
-            <span className="text-[9px] font-bold text-txt-muted uppercase tracking-tighter text-center italic">Tekstura</span>
+            <span className="text-[9px] font-bold text-txt-muted uppercase tracking-tighter text-center italic">Texture</span>
             <div className="flex gap-1">
               {TEXTURES.map(tex => (
                 <button
@@ -106,10 +106,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({ brush, setBrush }) => {
 
           <div className="h-8 w-[1px] bg-element-bg" />
 
-          {/* Suwak rozmiaru pędzla */}
+          {/* Brush size select */}
           <div className="flex flex-col gap-1 w-32 px-2">
             <div className="flex justify-between items-center px-0.5">
-                <span className="text-[9px] font-bold text-txt-muted uppercase">Pędzel</span>
+                <span className="text-[9px] font-bold text-txt-muted uppercase">Brush</span>
                 <span className="text-[10px] font-mono text-brand font-bold">{brush.size}px</span>
             </div>
             <input 

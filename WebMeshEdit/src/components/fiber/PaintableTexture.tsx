@@ -5,7 +5,7 @@ import type { ThreeEvent } from "@react-three/fiber";
 export const usePaintableTexture = (defaultSize = 1024) => {
     const lastUV = useRef<{ x: number; y: number } | null>(null);
     
-    // Tworzymy canvas tylko raz
+    // Canva create
     const canvas = useMemo(() => {
         const canva = document.createElement('canvas');
         canva.width = defaultSize;
@@ -52,14 +52,12 @@ export const usePaintableTexture = (defaultSize = 1024) => {
             if (distance > 0.1) lastUV.current = null;
         }
 
-        // --- GŁÓWNA ZMIANA: Obsługa tekstury ---
+        //  Texture support 
         if (patternImage) {
-            // Tworzymy powtarzający się wzór z obrazka
             const pattern = ctx.createPattern(patternImage, 'repeat');
             ctx.strokeStyle = pattern || color;
             ctx.fillStyle = pattern || color;
         } else {
-            // Zwykły kolor, jeśli nie ma tekstury
             ctx.strokeStyle = color;
             ctx.fillStyle = color;
         }
