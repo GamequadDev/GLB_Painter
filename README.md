@@ -1,5 +1,7 @@
 # <img src="public/Img1.png" width="1900" height="900" valign="middle"> GLB Painter
 
+## Live Demo https://glbpainterdeploy.vercel.app/
+
 **GLB Painter** is a modern, browser-based 3D graphics editor for painting 3D models in real-time.
 
 ## 🚀 Features
